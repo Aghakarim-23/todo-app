@@ -6,7 +6,8 @@ const App = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+    const saved = localStorage.getItem("tasks");
+    const savedTasks = saved ? JSON.parse(saved) : [];
     setTasks(savedTasks);
     console.log(savedTasks);
   }, []);
@@ -18,7 +19,7 @@ const App = () => {
       taskId: Date.now(),
       text: task,
       isEditing: false,
-      completed: false
+      completed: false,
     };
 
     const updatedTasks = [...tasks, newTask];
@@ -62,15 +63,18 @@ const App = () => {
   };
 
   const completeTask = (id) => {
-      const updatedTask = tasks.map((task) => id === task.taskId ? 
+    const updatedTask = tasks.map((task) =>
+      id === task.taskId ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTask);
 
-      { ...task, completed: !task.completed} : task ) 
-      setTasks(updatedTask)
+    localStorage.setItem("tasks", JSON.stringify(updatedTask));
+  };
 
-      localStorage.setItem("tasks", JSON.stringify(updatedTask))
-
-  }
-
+  const handleRemoveAllTodos = () => {
+    setTasks([]);
+    localStorage.setItem("tasks", JSON.stringify([]));
+  };
 
   return (
     <div className="flex justify-center items-center flex-col max-w-[90%] mx-auto">
@@ -94,6 +98,14 @@ const App = () => {
         >
           Add
         </button>
+        {tasks.length > 0 && (
+          <button
+            className="w-[80%] flex justify-center mx-auto text-white my-4 bg-red-500 py-2"
+            onClick={handleRemoveAllTodos}
+          >
+            Remove all todos
+          </button>
+        )}
       </form>
 
       <div className="flex flex-col gap-3 md:max-w-[45%] w-full">
@@ -117,11 +129,22 @@ const App = () => {
                 key={index}
                 className="flex justify-between border h-[3rem] items-center pl-2"
               >
-                <p className={`w-[60%] sm:w-[65%]  ${task.completed ? "line-through" : ""}`}>{task.text}</p>
-                 <span className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
+                <p
+                  className={`w-[60%] sm:w-[65%]  ${
+                    task.completed ? "line-through" : ""
+                  }`}
+                >
+                  {task.text}
+                </p>
+                <span
+                  className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
                   onClick={() => completeTask(task.taskId)}
-                 >
-                      <CircleCheck  className={`${task.completed ? "text-green-500" : ""} w-[15px] sm:w-[20px]`}/>
+                >
+                  <CircleCheck
+                    className={`${
+                      task.completed ? "text-green-500" : ""
+                    } w-[15px] sm:w-[20px]`}
+                  />
                 </span>
                 <span
                   className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
