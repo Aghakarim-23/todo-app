@@ -73,7 +73,7 @@ const App = () => {
 
 
   return (
-    <div className="flex justify-center items-center flex-col max-w-[70%] mx-auto">
+    <div className="flex justify-center items-center flex-col max-w-[90%] mx-auto">
       <h1 className="mt-50 text-3xl">To Do List</h1>
       <form
         className="my-5  md:max-w-[45%] w-full"
@@ -117,23 +117,23 @@ const App = () => {
                 key={index}
                 className="flex justify-between border h-[3rem] items-center pl-2"
               >
-                <p className={`w-[65%] ${task.completed ? "line-through" : ""}`}>{task.text}</p>
-                 <span className="w-[15%] flex justify-center border-l-2 pl-2  h-full items-center "
+                <p className={`w-[60%] sm:w-[65%]  ${task.completed ? "line-through" : ""}`}>{task.text}</p>
+                 <span className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
                   onClick={() => completeTask(task.taskId)}
                  >
-                      <CircleCheck  className={`${task.completed ? "text-green-500" : ""}`}/>
+                      <CircleCheck  className={`${task.completed ? "text-green-500" : ""} w-[15px] sm:w-[20px]`}/>
                 </span>
                 <span
-                  className="w-[15%] flex justify-center border-l-2 pl-2  h-full items-center "
+                  className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
                   onClick={() => editTask(task.taskId)}
                 >
-                  <SquarePen className="text-blue-500 cursor-pointer" />
+                  <SquarePen className="text-blue-500 cursor-pointer w-[15px] sm:w-[20px]" />
                 </span>
                 <span
-                  className="w-[15%] flex justify-center border-l-2 pl-2  h-full items-center "
+                  className="w-[20%] sm:w-[15%]  flex justify-center border-l-2  h-full items-center"
                   onClick={() => deleteTask(task.taskId)}
                 >
-                  <Trash className="text-red-500 cursor-pointer" />
+                  <Trash className="text-red-500 cursor-pointer w-[15px] sm:w-[20px]" />
                 </span>
               </div>
             )
